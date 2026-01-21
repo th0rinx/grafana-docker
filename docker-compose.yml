@@ -1,0 +1,25 @@
+services:
+  grafana:
+    container_name: "grafana"
+    image: grafana/grafana:12.2
+    restart: always
+    user: "472:472"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitor-net
+    environment:
+      GF_DEFAULT_TIMEZONE: "America/Costa_Rica"
+      GF_PLUGINS_PREINSTALL: "alexanderzobnin-zabbix-app"
+      # opcional: fijar credenciales admin desde .env
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD}"
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+  grafana-data:
